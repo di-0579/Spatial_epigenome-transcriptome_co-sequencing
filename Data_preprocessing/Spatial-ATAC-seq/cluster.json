@@ -1,0 +1,28 @@
+{
+    "__default__":
+    {
+        "partition": "general",
+        "job-name": "{rule}_{wildcards.sample}",
+        "ntasks": "1",
+        "cpus-per-task": "20",
+        "mem": "64g",
+        "time": "120:00:00",
+        "mail-type": "END",
+        "mail-user": "your email address",
+        "output": "{processedData_dir}/{wildcards.sample}/CellRanger/log/{rule}.%j.out",
+        "error": "{processedData_dir}/{wildcards.sample}/CellRanger/log/{rule}.%j.err"
+    },
+
+    "bc_process":
+    {
+        "cpus-per-task": "2",
+        "mem": "16g"
+    },
+
+    "R2_rename":
+    {
+        "cpus-per-task": "2",
+        "mem": "16g"
+    }
+
+}
