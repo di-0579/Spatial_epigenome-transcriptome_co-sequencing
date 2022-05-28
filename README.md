@@ -6,7 +6,7 @@
 
 ### Data processing
  Next Generation Sequencing (NGS) was performed using the Illumina NovaSeq 6000 sequencer (pair-end 150 bp mode).
-#### ATAC部分
+#### Spatial_ATAC-seq
 ##### 1.Raw Fastq data
 Read 1: contains the spatial Barcode A and Barcode B
 Read 2: contains the genome sequences
@@ -34,7 +34,7 @@ Human reference (GRCh38):
 
     sbatch Snakemake.sh
 
-#### RNA部分
+#### Spatial_RNA-seq
 
 **1. Raw Fastq data processing using ST pipeline and generate expression matrix**
 
@@ -58,12 +58,12 @@ Run st_pipeline.sh to start the ST pipeline: The input is processed_R2.fastq.gz 
     FW=$tmp/${sample}_R2_processed.fastq
     RV=$tmp/${sample}_raw_qc_R1.fastq.gz
     # References for mapping, annotation and nonRNA-filtering
-    MAP=/gpfs/ycga/project/fan/dz286/useful/Dbit/Dropseq_Alignment_References/mm10/
-    ANN=/gpfs/ycga/project/fan/dz286/useful/Dbit/Dropseq_Alignment_References/mm10/mm10.gtf 
-    CONT=/gpfs/ycga/project/fan/dz286/useful/Dbit/Spatial_omics_references/mouse/GRCm38_86/ncRNA/StarIndex/
+    MAP=/Dropseq_Alignment_References/mm10/
+    ANN=/Dropseq_Alignment_References/mm10/mm10.gtf 
+    CONT=/Spatial_omics_references/mouse/GRCm38_86/ncRNA/StarIndex/
 
     # Barcodes settings
-    ID=/gpfs/ycga/project/fan/dz286/useful/spatial_barcodes.txt
+    ID=/useful/spatial_barcodes.txt
 
     # Output folder and experiment name
     OUTPUT=../output/
@@ -93,11 +93,11 @@ Run st_pipeline.sh to start the ST pipeline: The input is processed_R2.fastq.gz 
       $FW $RV
 
 **4.Convert Ensemble to Gene Names**
-Then, Run converttoname.sh to annotate the resulting FFPE2_stdata.tsv.
+Then, Run converttoname.sh to annotate the resulting sample_stdata.tsv.
     
     #!/bin/bash
     tsv_E=$OUTPUT/${sample}_stdata.tsv
-    path_to_annotation_file=/gpfs/ycga/project/fan/dz286/useful/Dbit/Dropseq_Alignment_References/mm10/mm10.gtf
+    path_to_annotation_file=/Dropseq_Alignment_References/mm10/mm10.gtf
 
     convertEnsemblToNames.py --annotation $path_to_annotation_file --output $OUTPUT/${sample}_stdata_names.tsv $tsv_E
 
