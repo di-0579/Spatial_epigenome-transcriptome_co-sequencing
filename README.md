@@ -2,7 +2,7 @@
 ### 介绍
 该存储库旨在共享 在细胞水平上对表观基因组和转录组进行空间分辨的共测序项目中使用的原始数据处理和可视化代码。
 
-
+![](https://github.com/di-0579/Spatial_epigenome-transcriptome_co-sequencing/blob/main/workflow/workflow.jpg?raw=true)
 
 ### Data processing
  Next Generation Sequencing (NGS) was performed using the Illumina NovaSeq 6000 sequencer (pair-end 150 bp mode).
