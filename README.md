@@ -102,18 +102,9 @@ Then, Run converttoname.sh to annotate the resulting FFPE2_stdata.tsv.
     convertEnsemblToNames.py --annotation $path_to_annotation_file --output $OUTPUT/${sample}_stdata_names.tsv $tsv_E
 
 ####  Identify useful pixels (pixel on tissue) from microscope image using Matlab
+详情链接：
+https://github.com/edicliuyang/DBiT-seq_FFPE/tree/master/Figure_Processing
 
-Useful pixels were generated from the Matlab script. Basically, it divide the real tissue microscope image into 50x50 small sqaures which match with DBiT-seq pixels. Then, the intensity inside each pixel was calculated and only pixels have signals above a threashold will be selected.
-
-There two steps: To run the Matlab script "Pixel_identification.m"
-
-1、Use Photoshop or other photo editing software to crop the microscope image into exactly the size of the DBiT-seq covering area. For example, the upperleft of the image should be the 1x1 pixel of DBiT-seq, and the lowerright is the 50x50. No space is allowed. See "FFPE-2.jpg" for example.
-
-2、Use threashold function under Image->adjustment menu to adjust the image, so that your tissue is black and background is compeletely white.
-3、Invert the color of the image. The final image is like "FFPE-2_BW.jpg" in the Example_Data folder.
-
-
-4、Run the matlab script and a postion.txt file will be generated, which contains only the useful pixels.
 
 
 ### Data visualization
