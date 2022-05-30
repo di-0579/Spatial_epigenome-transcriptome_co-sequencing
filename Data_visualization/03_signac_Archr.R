@@ -7,7 +7,7 @@ library(grid)
 #set.seed(1)
 
 getwd()
-setwd("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/ATAC/ArchR/")
+setwd("/ATAC/ArchR/")
 
 
 data1 <- read.table("position_ATAC_3.txt", sep =",", header = FALSE, dec =".", stringsAsFactors = F)
@@ -18,7 +18,7 @@ data1 = as.data.frame(t(data1))
 
 
 
-my_data <- read.table(file = '/gpfs/ycga/project/fan/dz286/useful/spatial_barcodes.txt', 
+my_data <- read.table(file = '/useful/spatial_barcodes.txt', 
                       sep = '\t', stringsAsFactors=FALSE)
 
 my_data$V4 <- paste0(my_data$V2,"x",my_data$V3)
@@ -86,7 +86,7 @@ meta.data <- as.data.frame(getCellColData(ArchRProj = proj_in_tissue))
 
 ##################################################################
 
-signacdata <- read.table("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/ATAC/outs/data/Signac_meta_data.txt",sep = '\t', stringsAsFactors=FALSE)
+signacdata <- read.table("/Signac_meta_data.txt",sep = '\t', stringsAsFactors=FALSE)
 signacdata$seurat_clusters
 
 seurat_clusters <- signacdata[, "seurat_clusters", drop=FALSE]
@@ -130,11 +130,6 @@ proj_in_tissue <- addUMAP(
   metric = "cosine",
   force = TRUE
 )
-
-p3 <- plotEmbedding(ArchRProj = proj_in_tissue, colorBy = "cellColData", name = "seurat_clusters", embedding = "UMAP", size = 1)
-p3
-
-#ggsave("./plot/seurat_Clusters_ArchR-UMAP.png", plot = p3, width = 9, height = 10)
 
 
 
@@ -288,7 +283,7 @@ p_track <- plotBrowserTrack(
 proj_in_tissue <- addGroupCoverages(ArchRProj = proj_in_tissue, groupBy = "seurat_clusters")
 
 #pathToMacs2 <- findMacs2()
-pathToMacs2 <- "/gpfs/ycga/project/fan/dz286/conda_envs/ArchR/bin/macs2"
+pathToMacs2 <- "/ArchR/bin/macs2"
 
 #library(presto)
 proj_in_tissue <- addReproduciblePeakSet(
@@ -325,13 +320,13 @@ markersPeaks <- getMarkerFeatures(
 
 markersPeaks
 
-markerList <- getMarkers(markersPeaks, cutOff = "FDR <= 0.1 & Log2FC >= 0.5")
+markerList <- getMarkers(markersPeaks, cutOff = "FDR <= 0.05 & Log2FC >= 0.5")
 
 markerList
 
 heatmapPeaks <- plotMarkerHeatmap(
   seMarker = markersPeaks, 
-  cutOff = "FDR <= 0.1 & Log2FC >= 0.5",
+  cutOff = "FDR <= 0.05 & Log2FC >= 0.5",
   transpose = TRUE
 )
 
@@ -350,7 +345,7 @@ enrichMotifs <- peakAnnoEnrichment(
   seMarker = markersPeaks,
   ArchRProj = proj_in_tissue,
   peakAnnotation = "Motif",
-  cutOff = "FDR <= 0.1 & Log2FC >= 0.5"
+  cutOff = "FDR <= 0.05 & Log2FC >= 0.5"
 )
 enrichMotifs
 heatmapEM <- plotEnrichHeatmap(enrichMotifs, n = 50, transpose = TRUE)
@@ -432,8 +427,8 @@ library(ggplot2)
 library(patchwork)
 library(dplyr)
 
-source("/gpfs/ycga/project/fan/dz286/useful/code/getDeviation_ArchR.R")
-source("/gpfs/ycga/project/fan/dz286/useful/code/SpatialPlot_new.R")
+source("/useful/code/getDeviation_ArchR.R")
+source("/useful/code/SpatialPlot_new.R")
 
 ## Prepare meta data
 meta.data <- as.data.frame(getCellColData(ArchRProj = proj_in_tissue))
@@ -448,10 +443,6 @@ dev_score <- getDeviation_ArchR(ArchRProj = proj_in_tissue, name = motifs, imput
 dev_score[is.na(dev_score)] <- 0 #min(dev_score, na.rm = TRUE)
 
 
-# spatial_archr_data <- read.csv(file = "/gpfs/ycga/scratch60/fan/dz286/brainF/integration/data/all_brainF_gene_score_matrix.csv")
-# row.names(spatial_archr_data) <- spatial_archr_data$X
-# spatial_archr_data <- spatial_archr_data[,-1]
-# 
 
 data.dir <- getwd()
 assay = "Spatial"
@@ -479,10 +470,6 @@ motif_feature <- motifs[14]
 motif_feature <- ("Sox10-735")
 
 
-
-
-# p <- SpatialPlot_new(spatial.obj, features = motif_feature, pt.size.factor = 4, image.alpha = 0, stroke = 0) + 
-#   theme(legend.position = "right", legend.text=element_text(size=15), legend.title=element_text(size=15))
 p <- SpatialPlot(spatial.obj, features = motif_feature, pt.size.factor = 1, 
                      image.alpha = 1, stroke = 0, alpha = c(1, 1),  min.cutoff = "q5", max.cutoff = "q95") + 
   theme(legend.position = "right", legend.text=element_text(size=15), legend.title=element_text(size=15))
@@ -495,68 +482,22 @@ dev.off()
 
 
 #saveRDS(spatial.obj, file = "motif_spatial_ATAC.rds")
-
-#spatial.obj<-readRDS("/gpfs/ycga/scratch60/fan/dz286/brainF/ATAC/outs/motif_spatial_ATAC.rds")
-
 df <- as.data.frame(spatial.obj@assays$Spatial@counts)
 
-write.table(df, file = 'brain_E_2-motif_spatial__matrix.tsv', sep = '\t',col.names=TRUE, row.names = TRUE,quote = FALSE)
+write.table(df, file = 'motif_spatial__matrix.tsv', sep = '\t',col.names=TRUE, row.names = TRUE,quote = FALSE)
 
 
 
+#saveArchRProject(ArchRProj = proj_in_tissue, outputDirectory = "Save-signac_clusters", load = FALSE)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-motifPositions <- getPositions(proj_in_tissue)
-motifPositions
-
-
-
-saveArchRProject(ArchRProj = proj_in_tissue, outputDirectory = "Save-signac_clusters", load = FALSE)
-
-
-
-proj_in_tissue <- readRDS("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/ATAC/ArchR/Save-signac_clusters/Save-ArchR-Project.rds")
+proj_in_tissue <- readRDS("/ArchR/Save-signac_clusters/Save-ArchR-Project.rds")
 proj_in_tissue
 #######################################################
-# proj_in_tissue <- addCoAccessibility(
-#   ArchRProj = proj_in_tissue,
-#   reducedDims = "IterativeLSI"
-# )
-# cA <- getCoAccessibility(
-#   ArchRProj = proj_in_tissue,
-#   corCutOff = 0.5,
-#   resolution = 1,
-#   returnLoops = FALSE
-# )
-# cA
-# ###############################################
+###############################################
 
 
-P21C_DBiT_data <- read.table(file = "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/DBiT/output/P21_ATAC-DBiT_matrix.tsv",  header = TRUE, row.names = 1, as.is = TRUE)
+P21C_DBiT_data <- read.table(file = "/P21C_RNA_matrix.tsv",  header = TRUE, row.names = 1, as.is = TRUE)
 P21C_DBiT <- CreateSeuratObject(counts = P21C_DBiT_data, project = 'P21C_DBiT', assay = "RNA")
 P21C_DBiT<- FindVariableFeatures(P21C_DBiT, nfeatures = 3000)
 P21C_DBiT <- SCTransform(P21C_DBiT)
