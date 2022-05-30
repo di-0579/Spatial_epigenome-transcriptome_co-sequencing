@@ -127,12 +127,12 @@ p6 <- SpatialPlot(spatial.obj, label = FALSE, label.size = 1.8, group.by = 'wsnn
 p6$layers[[1]]$aes_params <- c(p6$layers[[1]]$aes_params, shape=22)
 p6
 
-ggsave("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/plot/Spatial-wsnn_res.0.8-UMP.png", plot = p6, width = 9, height = 9)
+ggsave("/integration/plot/Spatial-wsnn_res.0.8-UMP.png", plot = p6, width = 9, height = 9)
 p7 <- SpatialPlot(spatial.obj, label = FALSE, label.size = 1.8, group.by = 'SCT_snn_res.0.8', pt.size.factor = 1, cols = col, image.alpha = 1, stroke = 0)
 p7$layers[[1]]$aes_params <- c(p7$layers[[1]]$aes_params, shape=22)
 p7
 
-ggsave("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/plot/Spatial-RNA_res.0.8-UMP.png", plot = p7, width = 9, height = 9)
+ggsave("/integration/plot/Spatial-RNA_res.0.8-UMP.png", plot = p7, width = 9, height = 9)
 
 p8 <- SpatialPlot(spatial.obj, label = FALSE, label.size = 1.8, group.by = 'ATAC_snn_res.0.6', pt.size.factor = 1, cols = col, image.alpha = 1, stroke = 0)
 p8$layers[[1]]$aes_params <- c(p8$layers[[1]]$aes_params, shape=22)
@@ -157,43 +157,14 @@ p <- p1+p2+p3
 p
 
 
-ggsave("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/plot/3-UMP-wnn.png", plot = p, width = 15, height = 9)
+ggsave("/integration/plot/3-UMP-wnn.png", plot = p, width = 15, height = 9)
 
 write.csv(P21_C@reductions$umap.rna@cell.embeddings, 
-          "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/data/P21C_RNA_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
+          "/integration/data/P21C_RNA_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
 write.csv(P21_C@reductions$umap.cut@cell.embeddings, 
-          "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/data/P21C_ATAC_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
+          "/integration/data/P21C_ATAC_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
 write.csv(P21_C@reductions$wnn.umap@cell.embeddings, 
-          "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/data/P21C_wnn_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
+          "/integration/data/P21C_wnn_UMAP_coordinates-3.csv", row.names = T, col.names = T, quote=F)
 
 
-
-saveRDS(P21_C, file = "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/seuratobject/02_joint_human_brain_ATAC.rds")
-saveRDS(spatial.obj, file = "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/seuratobject/02_joint_human_brain_spatial_obj_ATAC.rds")
-
-
-
-
-
-############################################################################################
-
-P21_C <- readRDS("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/seuratobject/02_joint_human_brain_ATAC.rds")
-P21_C
-
-DefaultAssay(P21_C) <- 'ATAC'
-
-p1 <- DimPlot(P21_C, label = TRUE,cols = col,group.by = "SCT_snn_res.0.8",pt.size = 1.8) + NoLegend() + ggtitle("RNA UMAP")
-p2 <- DimPlot(P21_C, label = TRUE,cols = col,group.by = "ATAC_snn_res.0.6",pt.size = 1.8) + NoLegend() + ggtitle("ATAC UMAP")
-p3 <- DimPlot(P21_C, label = TRUE,cols = col,group.by = "wsnn_res.0.8",pt.size = 1.8) + NoLegend() + ggtitle("WNN UMAP")
-
-p <- p1+p2+p3
-p
-
-
-WSNN_data <- P21_C@meta.data
-WSNN_data <- WSNN_data[c("SCT_snn_res.0.8", "ATAC_snn_res.0.6", "wsnn_res.0.8")]
-colnames(WSNN_data) <- c('RNA_clusters', 'ATAC_clusters', 'Wsnn_clusters')
-
-write.csv(WSNN_data, 
-          "/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/data/WSNN_clusters_data.csv", row.names = T, col.names = T, quote=F)
 
