@@ -1,6 +1,7 @@
 # Spatial_epigenome-transcriptome_co-sequencing
-### 介绍
-该存储库旨在共享 在细胞水平上对表观基因组和转录组进行空间分辨的共测序项目中使用的原始数据处理和可视化代码。
+### Introduction
+
+This repository aims to share the raw data processing and visualization codes used in Spatial_epigenome-transcriptome_co-sequencing project.
 
 ![](https://github.com/di-0579/Spatial_epigenome-transcriptome_co-sequencing/blob/main/workflow/workflow.jpg?raw=true)
 
@@ -102,7 +103,7 @@ Then, Run converttoname.sh to annotate the resulting sample_stdata.tsv.
     convertEnsemblToNames.py --annotation $path_to_annotation_file --output $OUTPUT/${sample}_stdata_names.tsv $tsv_E
 
 ####  Identify useful pixels (pixel on tissue) from microscope image using Matlab
-详情链接：
+link：
 https://github.com/edicliuyang/DBiT-seq_FFPE/tree/master/Figure_Processing
 
 
