@@ -16,7 +16,7 @@ rm(list=ls())
 
 getwd()
 
-setwd("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/ATAC/ArchR")
+setwd("/ATAC/ArchR")
 rm(list=ls())
 
 library(SeuratObject)
@@ -96,7 +96,7 @@ P21_C<- FindClusters(P21_C, graph.name = "wsnn", algorithm = 3, resolution = 0.8
 
 ######################################################################################
 getwd()
-setwd("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/ATAC/outs")
+setwd("ATAC/outs")
 meta.data <- P21_C@meta.data
 new_row_names <- row.names(meta.data)
 new_row_names <- unlist(lapply(new_row_names, function(x) gsub("-.*","", x)))
@@ -138,12 +138,12 @@ p8 <- SpatialPlot(spatial.obj, label = FALSE, label.size = 1.8, group.by = 'ATAC
 p8$layers[[1]]$aes_params <- c(p8$layers[[1]]$aes_params, shape=22)
 p8
 
-ggsave("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/plot/ATAC_spatial-UMP.png", plot = p8, width = 9, height = 9)
+ggsave("ATAC_spatial-UMP.png", plot = p8, width = 9, height = 9)
 
 
 p2 <- p7+p8+p6
 p2
-ggsave("/gpfs/ycga/scratch60/fan/dz286/P21C_20um/integration/plot/wnn-3-spatial-UMP.png", plot = p2, width = 15, height = 9)
+ggsave("/wnn-3-spatial-UMP.png", plot = p2, width = 15, height = 9)
 
 
 
